@@ -1,6 +1,52 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
+import {ref, onMounted} from 'vue'
+import * as THREE from 'three'
+
+
+const navTarget = ref()
+let raycaster = new THREE.Raycaster()
+
+const scene = new THREE.Scene()
+const camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 0.1, 1000)
+
+const renderer = new THREE.WebGLRenderer()
+renderer.setSize(window.innerWidth, window.innerHeight / 3.75 )
+const geometry = new THREE.BoxGeometry(8,5,3)
+const material = new THREE.MeshBasicMaterial({ color: '#417571' })
+const cube = new THREE.Mesh( geometry, material)
+let  pointer = new THREE.Vector2()
+scene.add(cube)
+
+camera.position.z = 40
+
+function animate() {
+  requestAnimationFrame(animate)
+  cube.rotation.x += 0.01
+  cube.rotation.y += 0.01
+}
+function render() {
+  raycaster.setFromCamera(pointer, camera)
+  const intersects = raycaster.intersectObjects(scene )
+
+  for (let i = 0;i < intersects.length; i++){
+    console.log(intersects[i])
+  }
+  renderer.render( scene, camera)
+
+}
+function raycast(e){
+  let rect = renderer.domElement.getBoundingClientRect()
+  pointer.x = ((e?.clientX - rect.left) / (rect.width - rect.left) )* 2 -1
+  pointer.y = - ((e?.clientY - rect.top) / (rect.bottom - rect.top )) * 2 +1 
+}
+onMounted(() => {
+  navTarget.value.appendChild(renderer.domElement)
+  animate()
+  window.addEventListener('pointermove', raycast())
+  requestAnimationFrame(render)
+}) 
 </script>
 
 <template>
@@ -11,6 +57,7 @@ import HelloWorld from './components/HelloWorld.vue'
       <HelloWorld msg="You did it!" />
 
       <nav>
+        <div ref="navTarget"></div>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
       </nav>
