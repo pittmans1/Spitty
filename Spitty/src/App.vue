@@ -3,20 +3,83 @@ import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 import {ref, onMounted} from 'vue'
 import * as THREE from 'three'
+import { FontLoader } from 'three/addons/loaders/FontLoader.js';
+import { TextGeometry } from 'three/addons/geometries/TextGeometry.js';
 
+const scene = new THREE.Scene()
+
+THREE.Cache.enabled = true;
+			// https://threejs.org/docs/index.html#examples/en/loaders/FontLoader			
+const textMesh = new THREE.Group( );		
+const fontLoader = new FontLoader( );							// see function createText( loadedFont )
+fontLoader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', createText );
+textMesh.scale.set( 0.005, 0.005, 0.005 );
+textMesh.rotation.y = -0.74 // radiant
+textMesh.position.set( 5, 1, 0 );
+scene.add( textMesh );
+
+// ----------------------------------------------------------------------------
+
+			// https://en.wikipedia.org/wiki/Canvas_element   https://threejs.org/doc/#api/en/textures/CanvasTexture
+const cv = document.createElement( 'canvas' );
+cv.width = 10000 //  3 * 512
+cv.height = 5000;
+const ctx = cv.getContext( '2d' );
+ctx.fillStyle = '#fefefe'; 
+ctx.fillRect( 0, 0, cv.width, cv.height );
+ctx.fillStyle = '#129912';
+ctx.textAlign = 'left';
+ctx.textBaseline = 'middle';
+ctx.font = 'bold 6vh Arial';
+			// https://unicode.org/emoji/charts/full-emoji-list.html#1f642 (mark and copy - column Browser)
+ctx.fillText( 'three', 0, 100 * cv.height)
+const txtGeometry = new THREE.BoxGeometry( 2.4, 0.8, 0.1 ); // w 3 : h 1
+const cvTexture = new THREE.Texture( cv );
+cvTexture.needsUpdate = true; // otherwise all black only
+const spineMat = new THREE.MeshPhongMaterial( { color: 0xa5800e } );
+const cvMaterial = new THREE.MeshBasicMaterial( { map: cvTexture  } );
+const cvMaterials = [ spineMat, spineMat, spineMat, spineMat, cvMaterial, cvMaterial ]; 
+const cvTxtMesh = new THREE.Mesh( txtGeometry, cvMaterials );
+cvTxtMesh.rotation.y = 2.4; // radiant
+cvTxtMesh.position.set( 0, 0, 15);
+scene.add( cvTxtMesh );
+
+function createText( loadedFont ) {
+	
+	const textMaterial = new THREE.MeshPhongMaterial( { color: 0x0033ff, specular: 0x444444, shininess: 20 } );
+	
+	const textGeometry = new TextGeometry( 'three.js \nexample', {
+		
+		font: loadedFont,
+		size: 70,
+		height: 4,
+		curveSegments: 10,
+		bevelEnabled: true,
+		bevelThickness: 8,
+		bevelSize: 8,
+		bevelSegments: 5
+		
+	});
+	
+	textGeometry.center(); // otherwise position left side
+	
+	const tMesh = new THREE.Mesh( textGeometry, textMaterial );
+	
+	textMesh.add( tMesh );
+}
 
 const navTarget = ref()
 let raycaster = new THREE.Raycaster()
 
-const scene = new THREE.Scene()
 const camera = new THREE.PerspectiveCamera( 35, window.innerWidth / window.innerHeight, 0.1, 1000)
 
 const renderer = new THREE.WebGLRenderer()
 renderer.setSize(window.innerWidth, window.innerHeight / 3.75 )
-const geometry = new THREE.BoxGeometry(8,5,3)
+const geometry = new THREE.BoxGeometry(8,5,5)
 const material = new THREE.MeshBasicMaterial({ color: '#417571' })
 const cube = new THREE.Mesh( geometry, material)
 let  pointer = new THREE.Vector2()
+scene.background = new THREE.Color('#181818')
 scene.add(cube)
 
 camera.position.z = 40
@@ -68,6 +131,7 @@ onMounted(() => {
 </template>
 
 <style scoped>
+
 header {
   line-height: 1.5;
   max-height: 100vh;
