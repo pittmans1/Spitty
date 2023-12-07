@@ -1,6 +1,6 @@
 <template lang="">
   <div>
-    stars
+    Stars
   </div>
 </template>
 <script>

@@ -7,5 +7,6 @@ import Hero from "./Hero.vue"
 import Navbar from "./Navbar.vue"
 import Tech from "./Tech.vue"
 import Works from "./Works.vue"
+import Stars from './Stars.vue'
 
-export { Works, About, Contact, Experience, Feedbacks, Hero, Navbar, Tech };
+export { Works, About, Contact, Experience, Feedbacks, Hero, Navbar, Tech, Stars };
