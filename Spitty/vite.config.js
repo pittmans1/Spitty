@@ -8,7 +8,10 @@ import vueJsx from '@vitejs/plugin-vue-jsx'
 export default defineConfig({
   plugins: [
     vue({
-      ...templateCompilerOptions
+      ...templateCompilerOptions,
+      template: {
+        compilerOptions: tag => tag.startsWith('Tres') && tag !== 'TresCanvas',
+      }
     }),
     vueJsx(),
   ],
