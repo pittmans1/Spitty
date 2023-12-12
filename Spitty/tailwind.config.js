@@ -20,8 +20,14 @@ module.exports = {
       },
       backgroundImage: {
         "hero-pattern": "url('/src/assets/herobg.png')",
+        "hero-new":"url('/src/assets/heronewbg.png')",
       },
     },
+  },
+  variants: {
+    extend: {
+      padding: ['hover'],
+    }
   },
   plugins: [],
 }

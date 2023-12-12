@@ -1,6 +1,7 @@
-import EarthCanvas from "./Earth";
-import BallCanvas from "./Ball";
-import ComputersCanvas from "./Computers";
-import StarsCanvas from "./Stars";
+import EarthCanvas from "./Earth.vue";
+import BallCanvas from "./Ball.vue";
+import ComputersCanvas from "./Computers.vue";
+import StarsCanvas from "./Stars.vue";
+import Myself from './Myself.Vue'
 
-export { EarthCanvas, BallCanvas, ComputersCanvas, StarsCanvas };
+export { EarthCanvas, BallCanvas, ComputersCanvas, StarsCanvas, Myself };

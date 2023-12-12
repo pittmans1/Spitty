@@ -10,8 +10,9 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@tresjs/cientos": "^3.6.0",
     "@tresjs/core": "^3.5.1",
-    "@vueuse/motion": "^2.0.0",
+    "@vueuse/motion": "^2.0.0-beta.22",
     "maath": "^0.10.4",
     "pinia": "^2.1.7",
     "tailwind": "^4.0.0",

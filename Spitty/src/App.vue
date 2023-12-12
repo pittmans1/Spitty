@@ -1,6 +1,5 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 import { About, Contact, Experience, Feedbacks, Hero, Navbar, Tech, Works, Stars} from './components'
 // import {ref, onMounted} from 'vue'
 // import * as THREE from 'three'
@@ -13,7 +12,7 @@ import { About, Contact, Experience, Feedbacks, Hero, Navbar, Tech, Works, Stars
   <header>
   </header>
    <div className="relative z-0 bg-primary">
-    <div className="bg-hero-pattern bg-cover bg-no-repeat bg-center">
+    <div className="bg-hero-new bg-cover bg-no-repeat bg-center">
       <Navbar />
       <Hero />
     </div>
